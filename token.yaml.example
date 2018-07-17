@@ -1,0 +1,2 @@
+---
+default: '{"client_id":"","access_token":"","refresh_token":"","scope":["https://www.googleapis.com/auth/calendar.readonly"],"expiration_time_millis":1531865082000}'
