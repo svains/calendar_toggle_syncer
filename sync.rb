@@ -10,8 +10,7 @@ require 'awesome_print'
 puts "Today's events:"
 
 google_calendar = GoogleCalendar.new
-toggle_syncer = TogglV8::API.new(ENV['TOGGLE_API_TOKEN'])
-toggle_syncer.debug(true)
+toggle_syncer   = ToggleSyncer.new
 
 events = google_calendar.fetch.items
 
@@ -24,25 +23,17 @@ else
 
     # Skip if it already exists
 
-
     start_time = event.start.date || event.start.date_time
     end_time   = event.end.date   || event.end.date_time
 
-    toggle_syncer.create_time_entry({
-      'description' => event.summary,
-      'wid' => '605711',
-      'duration' => 1200,
-      'start' => start_time.strftime('%Y-%m-%dT%H:%M:%S.%L%z'),
-      'stop' => end_time.strftime('%Y-%m-%dT%H:%M:%S.%L%z'),
-      'created_with' => event.summary,
-      'pid' => '8453932',
-      'billable' => true,
-    })
+    duration = (end_time.to_time - start_time.to_time)
 
-    puts "- #{event.summary} (#{start})"
+    puts "- #{event.summary} - #{duration} - (#{start_time} - #{end_time})"
+
+    toggle_syncer.create_event(
+      duration: duration,
+      start_time: start_time,
+      description: event.summary
+    )
   end
 end
-
-# raise toggle_syncer.all_time_entries.inspect
-
-# raise toggl_api.get_time_entries({start_date: Date.today.next_day.to_time.strftime('%Y-%m-%dT%H:%M:%S.%L%z'), end_date: Date.today.to_time.strftime('%Y-%m-%dT%H:%M:%S.%L%z')}).inspect

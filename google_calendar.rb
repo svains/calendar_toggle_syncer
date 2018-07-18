@@ -27,7 +27,7 @@ class GoogleCalendar
   end
 
   def skip?(event_name)
-    skip_event_names.include?(event_name)
+    skip_event_names.map(&:downcase).include?(event_name.downcase)
   end
 
 
