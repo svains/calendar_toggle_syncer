@@ -16,6 +16,7 @@ class ToggleSyncer
   end
 
   def create_event(duration:, wid: BLUEBERRY_WORKSPACE_ID, pid: PROJECT_ID_DEV_OTHER, description:, start_time:)
+    # Skip if it already exists
     unless my_time_entries.select { |entry|
       entry['description'] == description &&
       Time.parse(entry['start']) == Time.parse(start_time.to_s)

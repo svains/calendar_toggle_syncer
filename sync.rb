@@ -21,7 +21,8 @@ else
     # Skip if we're filtering this
     next if google_calendar.skip?(event.summary)
 
-    # Skip if it already exists
+    # Skip if declined event
+    next if event.attendees.select {|attendee| attendee.email.start_with?(ENV['BB_LOGIN']) && %w(accepted tentative).include?(attendee.response_status)}.empty?
 
     start_time = event.start.date || event.start.date_time
     end_time   = event.end.date   || event.end.date_time
