@@ -29,6 +29,9 @@ else
 
     duration = (end_time.to_time - start_time.to_time)
 
+    # Skip if more than 12 hour event
+    next if duration > 43200
+
     puts "- #{event.summary} - #{duration} - (#{start_time} - #{end_time})"
 
     toggle_syncer.create_event(
