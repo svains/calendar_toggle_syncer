@@ -27,7 +27,9 @@ class GoogleCalendar
   end
 
   def skip?(event_name)
-    skip_event_names.map(&:downcase).include?(event_name.downcase)
+    skip_event_names.map(&:downcase).any? {|word|
+      event_name.downcase.match(word)
+    }
   end
 
 
@@ -67,7 +69,7 @@ class GoogleCalendar
   def skip_event_names
     @skip_event_names ||= begin
       YAML.load(File.read('skip_event_names.json'))
-    end
+    end << 'SKIP'
   end
 
   def client_id
